@@ -14,8 +14,10 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 IncludeDir["GLFW"] = "GameEngine/vendor/GLFW/include"
+IncludeDir["Glad"] = "GameEngine/vendor/Glad/include"
 
 include "GameEngine/vendor/GLFW"
+include "GameEngine/vendor/Glad"
 
 project "GameEngine"
 	location "GameEngine"
@@ -38,12 +40,14 @@ project "GameEngine"
 	{
 		"%{prj.name}/src",
 		"%{prj.name}/vendor/spdlog/include",
-		"%{IncludeDir.GLFW}"
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}"
 	}
 
 	links
 	{
 		"GLFW",
+		"Glad",
 		"opengl32.lib"
 	}
 
@@ -55,7 +59,8 @@ project "GameEngine"
 		defines
 		{
 			"ENGINE_PLATFORM_WINDOWS",
-			"ENGINE_BUILD_DLL"
+			"ENGINE_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
 		}
 
 		postbuildcommands
@@ -71,10 +76,12 @@ project "GameEngine"
 	filter "configurations:Release"
 		defines "ENGINE_RELEASE"
 		optimize "On"
+		buildoptions "/MD"
 
 	filter "configurations:Dist"
 		defines "ENGINE_DIST"
 		symbols "On"
+		buildoptions"/MD"
 
 project "Sandbox"
 	location "Sandbox"
@@ -114,11 +121,14 @@ project "Sandbox"
 	filter "configurations:Debug"
 		defines "ENGINE_DEBUG"
 		symbols "On"
+		buildoptions "/MDd"
 
 	filter "configurations:Release"
 		defines "ENGINE_RELEASE"
 		optimize "On"
+		buildoptions "/MD"
 
 	filter "configurations:Dist"
 		defines "ENGINE_DIST"
 		symbols "On"
+		buildoptions "/MD"
