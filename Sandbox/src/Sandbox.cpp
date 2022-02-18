@@ -26,6 +26,7 @@ public:
 	Sanbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new Engine::ImGuiLayer());
 	}
 	~Sanbox()
 	{
